@@ -10,6 +10,8 @@ var fs = require('fs'),
     errorhandler = require('errorhandler'),
     mongoose = require('mongoose');
 
+require('dotenv').config()
+
 var isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
@@ -31,10 +33,11 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
+console.log("# ENV:", process.env)
 if(isProduction){
   mongoose.connect(process.env.MONGODB_URI);
 } else {
-  mongoose.connect('mongodb://localhost/conduit');
+  mongoose.connect(process.env.MONGODB_URI);
   mongoose.set('debug', true);
 }
 
