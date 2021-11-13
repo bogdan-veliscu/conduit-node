@@ -10,7 +10,9 @@ var fs = require('fs'),
     errorhandler = require('errorhandler'),
     mongoose = require('mongoose');
 
-require('dotenv').config()
+require('./models/User');
+
+require('dotenv').config();
 
 var isProduction = process.env.NODE_ENV === 'production';
 
@@ -37,9 +39,14 @@ console.log("# ENV:", process.env)
 if(isProduction){
   mongoose.connect(process.env.MONGODB_URI);
 } else {
-  mongoose.connect(process.env.MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_URI, {
+        useNewUrlParser:true,
+        useCreateIndex:true
+    });
   mongoose.set('debug', true);
 }
+
+require('./config/passport')
 
 app.use(require('./routes'));
 
