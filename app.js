@@ -11,6 +11,7 @@ var fs = require('fs'),
     mongoose = require('mongoose');
 
 require('./models/User');
+require('./models/Article')
 
 require('dotenv').config();
 
@@ -29,21 +30,21 @@ app.use(bodyParser.json());
 app.use(require('method-override')());
 app.use(express.static(__dirname + '/public'));
 
-app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
+app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
 if (!isProduction) {
-  app.use(errorhandler());
+    app.use(errorhandler());
 }
 
 console.log("# ENV:", process.env)
-if(isProduction){
-  mongoose.connect(process.env.MONGODB_URI);
+if (isProduction) {
+    mongoose.connect(process.env.MONGODB_URI);
 } else {
     mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser:true,
-        useCreateIndex:true
+        useNewUrlParser: true,
+        useCreateIndex: true
     });
-  mongoose.set('debug', true);
+    mongoose.set('debug', true);
 }
 
 require('./config/passport')
@@ -52,9 +53,9 @@ app.use(require('./routes'));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 /// error handlers
@@ -62,29 +63,33 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-  app.use(function(err, req, res, next) {
-    console.log(err.stack);
+    app.use(function(err, req, res, next) {
+        console.log(err.stack);
 
-    res.status(err.status || 500);
+        res.status(err.status || 500);
 
-    res.json({'errors': {
-      message: err.message,
-      error: err
-    }});
-  });
+        res.json({
+            'errors': {
+                message: err.message,
+                error: err
+            }
+        });
+    });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.json({'errors': {
-    message: err.message,
-    error: {}
-  }});
+    res.status(err.status || 500);
+    res.json({
+        'errors': {
+            message: err.message,
+            error: {}
+        }
+    });
 });
 
 // finally, let's start our server...
-var server = app.listen( process.env.PORT || 3000, function(){
-  console.log('Listening on port ' + server.address().port);
+var server = app.listen(process.env.PORT || 3000, function() {
+    console.log('Listening on port ' + server.address().port);
 });

@@ -44,7 +44,7 @@ UserSchema.methods.generateJWT = function() {
     }, secret);
 };
 
-UserSchema.methods.toProfileJSONFor = function(user){
+UserSchema.methods.toProfileJSONFor = function(user) {
     return {
         username: this.username,
         bio: this.bio,
