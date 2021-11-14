@@ -11,7 +11,8 @@ var fs = require('fs'),
     mongoose = require('mongoose');
 
 require('./models/User');
-require('./models/Article')
+require('./models/Article');
+require('./models/Comment');
 
 require('dotenv').config();
 
